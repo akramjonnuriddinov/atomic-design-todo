@@ -1,47 +1,39 @@
 <template>
-  <div class="container max-w-7xl p-5 mx-auto">
+  <div class="container p-5 mx-auto max-w-7xl">
     <h1 class="text-2xl font-semibold">Todo app</h1>
     <form @submit.prevent="addTodo" class="flex flex-col py-5">
-      <div class="flex gap-5 items-center">
+      <div class="flex items-center gap-5">
         <input
           v-model="newTodo"
-          class="border rounded p-3 max-w-72 w-full"
+          class="w-full p-3 border rounded max-w-72"
           type="text"
           placeholder="Enter task"
         />
-        <button
-          class="bg-blue-400 text-white flex items-center justify-center px-5 py-3 rounded cursor-pointer"
-        >
-          Add
-        </button>
+        <base-button classes="bg-blue-400">Add</base-button>
       </div>
     </form>
     <ul class="flex flex-col gap-4">
       <li
         v-for="todo in todos"
         :key="todo.id"
-        class="bg-gray-100 pl-3 rounded flex items-center justify-between"
+        class="flex items-center justify-between pl-3 bg-gray-100 rounded"
       >
         <input
           v-model="todo.done"
-          class="mr-2 cursor-pointer w-4 h-4 border-2 border-blue-500 rounded-sm bg-white"
+          class="w-4 h-4 mr-2 bg-white border-2 border-blue-500 rounded-sm cursor-pointer"
           type="checkbox"
         />
         <span class="flex w-full">{{ todo.title }}</span>
-        <button
+        <base-button
           @click="
             ;(isOpen = true), (updateId = todo.id), (updateTodo = todo.title)
           "
-          class="text-white bg-green-400 mr-1 flex items-center justify-center px-5 py-3 rounded cursor-pointer"
+          classes="bg-green-400 mr-1"
+          >Edit</base-button
         >
-          Edit
-        </button>
-        <button
-          @click="deleteTodo(todo.id)"
-          class="text-white bg-red-400 flex items-center justify-center px-5 py-3 rounded cursor-pointer"
-        >
+        <base-button @click="deleteTodo(todo.id)" classes="bg-red-400">
           Delete
-        </button>
+        </base-button>
       </li>
     </ul>
   </div>
@@ -50,22 +42,18 @@
     @click="toggleModal"
     class="fixed bg-[#00000080] w-full h-full top-0 flex p-10 items-start justify-center"
   >
-    <div @click.stop class="bg-white max-w-5xl w-full rounded p-5 min-h-60">
+    <div @click.stop class="w-full max-w-5xl p-5 bg-white rounded min-h-60">
       <form
         @submit.prevent="editTodo(updateId, updateTodo), (updateTodo = '')"
-        class="flex gap-5 items-center"
+        class="flex items-center gap-5"
       >
         <input
           v-model="updateTodo"
-          class="border rounded p-3 max-w-72 w-full"
+          class="w-full p-3 border rounded max-w-72"
           type="text"
           placeholder="Enter new task"
         />
-        <button
-          class="bg-blue-400 text-white flex items-center justify-center px-5 py-3 rounded cursor-pointer"
-        >
-          Update
-        </button>
+        <base-button classes="bg-blue-400">Update</base-button>
       </form>
     </div>
   </div>
@@ -73,6 +61,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
+import BaseButton from "../components/atoms/BaseButton.vue"
 
 interface Todo {
   id: number
@@ -80,7 +69,7 @@ interface Todo {
   done: boolean
 }
 
-let id = 1
+let id = 4
 const newTodo = ref("")
 const todos = ref<Todo[]>([])
 const isOpen = ref(false)
